@@ -9,7 +9,7 @@
 
 ---
 ## URL utils
--[SVG Bgs](https://www.svgbackgrounds.com/)
--[Fuentes](https://fonts.google.com/)
--[Image color picker](https://imagecolorpicker.com/)
--[Font Awesome](https://fontawesome.com/icons)
+- [SVG Bgs](https://www.svgbackgrounds.com/)
+- [Fuentes](https://fonts.google.com/)
+- [Image color picker](https://imagecolorpicker.com/)
+- [Font Awesome](https://fontawesome.com/icons)
