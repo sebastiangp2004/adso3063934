@@ -97,6 +97,30 @@ main {
             font-weight: 300;
         }
     }
+    section.section {
+        margin-top: 1rem;
+        border-radius: 6px;
+        padding: 1rem;
+        min-height: 30dvh;
+        width: 400px;
+        background-color: #0009;
+        h3 {
+            font-size: 1.6rem;
+            border-bottom: 2px dotted #fff6;
+        }
+        p.example {
+            color: #6aae11;
+            margin-top: 0.4rem;
+            font-size: 1.6rem;
+        }
+        xmp {
+            background-color: #0009;
+            border-radius: 6px;
+            color: #6aae11;
+            font-size: 1rem;
+            padding: 10px 10px 20px 10px;
+        }
+    }
     menu.menu {
         display: flex;
         flex-direction: column;
