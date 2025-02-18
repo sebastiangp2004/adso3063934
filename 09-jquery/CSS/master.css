@@ -1,0 +1,120 @@
+body {
+    background-color: #bdbcbc;
+    color: #111;
+    display: flex;
+    align-items: center;
+    font-family: sans-serif;
+    justify-content: center;
+    min-height: 100dvh;
+}
+
+main {
+    background-color: #ffffff;
+    padding: 1rem;
+    width: 380px;
+
+    header {
+
+        h1 {
+            text-align: center;
+            border-bottom: 1px solid blue;
+            margin: 0;
+        }
+
+        section.info {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+
+            div {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+
+                span {
+                    align-items: center;
+                    border-radius: 50%;
+                    background-color: blue;
+                    color: #fff;
+                    display: flex;
+                    height: 30px;
+                    justify-content: center;
+                    width: 30px;
+                }
+            }
+        }
+
+    }
+
+    section.list {
+        article {
+            background-color: rgb(202, 204, 204);
+            border-radius: 0.4rem;
+            display: flex;
+            gap: 4rem;
+            margin-bottom: .4rem;
+            justify-content: space-between;
+            padding-inline: 1rem;
+            align-items: center;
+
+            &.checked {
+                background-color: hwb(209 0% 0% / 0.2) !important;
+
+                p {
+                    text-decoration: line-through;
+                }
+            }
+
+            input {
+                accent-color: rgb(42, 72, 247);
+                zoom: 1.4;
+            }
+
+            button {
+                background-color: rgba(220, 20, 60, 0.63);
+                border-radius: 50%;
+                border: none;
+                cursor: pointer;
+                color: white;
+                height: 20px;
+                width: 20px;
+                transition: transform 0.4s ease-in;
+
+                &:hover {
+                    transform: scale(1.2);
+                }
+            }
+        }
+
+        article:nth-child(even) {
+            background-color: #ccc;
+        }
+
+    }
+
+    footer {
+        display: flex;
+
+        input {
+            border: 1px solid #444;
+            border-right-color: greenyellow;
+            border-radius: 0.4rem 0 0 .4rem;
+            width: 390px;
+            outline: none;
+            padding: 0.5rem;
+        }
+
+        button {
+            background-color: rgb(128, 183, 255);
+            border-radius: 0 .4rem .4rem 0;
+            border: 1px solid #444;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            width: 37px;
+        }
+    }
+}
