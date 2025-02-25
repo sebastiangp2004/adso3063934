@@ -99,7 +99,7 @@ main {
             border: 1px solid #444;
             border-right-color: greenyellow;
             border-radius: 0.4rem 0 0 .4rem;
-            width: 390px;
+            width: 360px;
             outline: none;
             padding: 0.5rem;
         }
@@ -116,5 +116,28 @@ main {
             font-size: 1.4rem;
             width: 37px;
         }
+    }
+    #clear {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        margin: 0.7rem auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    #clear:hover {
+        background-color: #c0392b;
+    }
+    #trash{
+        width :16;
+        height:16;
     }
 }
