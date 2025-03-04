@@ -136,8 +136,5 @@ main {
     #clear:hover {
         background-color: #c0392b;
     }
-    #trash{
-        width :16;
-        height:16;
-    }
+
 }
