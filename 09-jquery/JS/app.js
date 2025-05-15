@@ -55,6 +55,7 @@ $(function () {
 })
 //Count Tasks
 function countTasks() {
+    
     $('.num-tasks').text($('article').length)
     $('.title-tasks').text($('article').length > 1 ? 'Tasks' : 'Task')
 }

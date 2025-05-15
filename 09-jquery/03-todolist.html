@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03- todolist</title>
+    <link rel="shortcut icon" href="../images/jquery.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/master.css">
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+        }
+
+        div {
+            background-color: #FFFFFF;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%2312EFFB' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%230EBDBB'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
+            padding: 1rem;
+            width: auto;    
+            header {
+
+                h1 {
+                    text-align: center;
+                    border-bottom: 1px solid blue;
+                    margin: 0;
+                }
+
+                section.info {
+                    display: flex;
+                    gap: 1rem;
+                    justify-content: space-between;
+
+                    div {
+                        display: flex;
+                        align-items: center;
+                        gap: .5rem;
+
+                        span {
+                            align-items: center;
+                            border-radius: 50%;
+                            background-color: blue;
+                            color: #fff;
+                            display: flex;
+                            height: 30px;
+                            justify-content: center;
+                            width: 30px;
+                        }
+                    }
+                }
+
+            }
+
+            section.list {
+                article {
+                    background-color: rgb(202, 204, 204);
+                    border-radius: 0.4rem;
+                    display: flex;
+                    gap: 4rem;
+                    margin-bottom: .4rem;
+                    justify-content: space-between;
+                    padding-inline: 1rem;
+                    align-items: center;
+
+                    &.checked {
+                        background-color: hwb(209 0% 0% / 0.2) !important;
+
+                        p {
+                            text-decoration: line-through;
+                        }
+                    }
+
+                    input {
+                        accent-color: rgba(93, 233, 46, 0.915);
+                        zoom: 1.4;
+                    }
+
+                    button {
+                        background-color: rgba(220, 20, 60, 0.63);
+                        border-radius: 50%;
+                        border: none;
+                        cursor: pointer;
+                        color: white;
+                        height: 20px;
+                        width: 20px;
+                        transition: transform 0.4s ease-in;
+
+                        &:hover {
+                            transform: scale(1.2);
+                        }
+                    }
+                }
+
+                article:nth-child(even) {
+                    background-color: #ccc;
+                }
+
+            }
+
+            footer {
+                display: flex;
+
+                input {
+                    border: 1px solid #444;
+                    border-right-color: greenyellow;
+                    border-radius: 0.4rem 0 0 .4rem;
+                    width: 360px;
+                    outline: none;
+                    padding: 0.5rem;
+                }
+
+                button {
+                    background-color: rgb(128, 183, 255);
+                    border-radius: 0 .4rem .4rem 0;
+                    border: 1px solid #444;
+                    color: white;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 1.4rem;
+                    width: 37px;
+                }
+            }
+
+            #clear {
+                background-color: #e74c3c;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s ease;
+                margin: 0.7rem auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+            }
+
+            #clear:hover {
+                background-color: #c0392b;
+            }
+
+        }
+    </style>
+
+</head>
+
+<body class="jquery">
+    <nav class="nav">
+        <a href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                <path
+                    d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c0 2.7-.2 5.4-.5 8.1l0 16.2c0 22.1-17.9 40-40 40l-16 0c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1L416 512l-24 0c-22.1 0-40-17.9-40-40l0-24 0-64c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 64 0 24c0 22.1-17.9 40-40 40l-24 0-31.9 0c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2l-16 0c-22.1 0-40-17.9-40-40l0-112c0-.9 0-1.9 .1-2.8l0-69.7-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z" />
+            </svg>
+        </a>
+    </nav>
+    <main>
+        <header class="header">
+            <h1>03- todolist</h1>
+            <p>Build a simple to-do list application.</p>
+        </header>
+        <section class="section">
+            <div>
+                <header>
+                    <h1>Todo List</h1>
+                    <section class="info">
+                        <div class="tasks">
+                            <span class="num-tasks">2</span>
+                            <p class="title-task">Tasks</p>
+                        </div>
+                        <div class="remains">
+                            <span class="num-remains">1</span>
+                            <p class="title-remains">Remains</p>
+                        </div>
+                    </section>
+                </header>
+                <section class="list">
+                </section>
+                <footer>
+                    <input type="text" id="input-task" placeholder="Add Task" maxlength="35">
+                    <button id="add">+</button>
+                </footer>
+                <button id="clear">
+                    <img src="/images/basura.svg" alt="" style="width : 16px; height: 16px;">
+                </button>
+            </div>
+            <script src="JS/jquery-3.7.1.min.js"></script>
+            <script src="JS/app.js"></script>
+        </section>
+    </main>
+    <script src="JS/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+</body>
+
+</html>
