@@ -1,33 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>12- challenge-memory-game</title>
     <link rel="shortcut icon" href="../images/jquery.ico" type="image/x-icon">
     <link rel="stylesheet" href="../css/master.css">
+    <style>
+        section.section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: auto !important;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            justify-items: center;
+            align-items: center;
+        }
+
+        .tittle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ca983b;
+            background-color: #ca983b87;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+            .score-timer {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        .card {
+            width: 120px;
+            height: 120px;
+            margin: 10px;
+            cursor: pointer;
+            perspective: 600px;
+            /* 3D perspective for flip */
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+        }
+
+        .card-front {
+            z-index: 2;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .score-timer {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        .attempts,
+        .timer {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+
+        #restart-btn {
+            margin-top: 10px;
+            padding: 8px 20px;
+            font-size: 1em;
+            border-radius: 6px;
+            border: none;
+            background: #ca983b;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body class="jquery">
     <nav class="nav">
         <a href="index.html">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c0 2.7-.2 5.4-.5 8.1l0 16.2c0 22.1-17.9 40-40 40l-16 0c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1L416 512l-24 0c-22.1 0-40-17.9-40-40l0-24 0-64c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 64 0 24c0 22.1-17.9 40-40 40l-24 0-31.9 0c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2l-16 0c-22.1 0-40-17.9-40-40l0-112c0-.9 0-1.9 .1-2.8l0-69.7-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                <path
+                    d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c0 2.7-.2 5.4-.5 8.1l0 16.2c0 22.1-17.9 40-40 40l-16 0c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1L416 512l-24 0c-22.1 0-40-17.9-40-40l0-24 0-64c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 64 0 24c0 22.1-17.9 40-40 40l-24 0-31.9 0c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2l-16 0c-22.1 0-40-17.9-40-40l0-112c0-.9 0-1.9 .1-2.8l0-69.7-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z" />
+            </svg>
         </a>
     </nav>
     <main>
         <header class="header">
             <h1>12- challenge-memory-game</h1>
             <p>Build a memory game using jQuery.</p>
-            
         </header>
         <section class="section">
-
+            <div class="tittle">
+                <h1>Memory Game</h1>
+                <div class="score-timer">
+                    <div class="attempts">Intentos: <span id="attempts">0</span></div>
+                    <div class="timer">Time: <span id="time">0</span> seconds</div>
+                </div>
+                
+            </div>
+            <div class="game-board" id="game-board">
+                <!-- Cards will be dynamically generated here -->
+            </div>
+            <button id="restart-btn">Reiniciar</button>
         </section>
     </main>
     <script src="JS/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // This file contains the main logic for the memory game.
+
         $(document).ready(function () {
-            
+            const cardImages = [
+                '1.svg', '1.svg',
+                '2.svg', '2.svg',
+                '3.svg', '3.svg',
+                '4.svg', '4.svg',
+                '5.svg', '5.svg',
+                '6.svg', '6.svg',
+            ];
+
+            let firstCard = null;
+            let secondCard = null;
+            let lockBoard = false;
+            let attempts = 0;
+            let timer;
+            let timeElapsed = 0; // Tiempo transcurrido en segundos
+
+            function shuffle(array) {
+                array.sort(() => Math.random() - 0.5);
+            }
+
+            function createBoard() {
+                shuffle(cardImages);
+                const gameBoard = $('.game-board');
+                cardImages.forEach(image => {
+                    const card = $('<div class="card"></div>');
+                    const cardInner = $('<div class="card-inner"></div>');
+                    const front = $('<div class="card-front"><img src="./img/memory-game/back.svg" alt="Card Back"></div>');
+                    const back = $('<div class="card-back"><img src="./img/memory-game/' + image + '" alt="Card Image"></div>');
+                    cardInner.append(front).append(back);
+                    card.append(cardInner);
+                    gameBoard.append(card);
+                    card.on('click', flipCard);
+                });
+            }
+
+            function flipCard() {
+                if (lockBoard) return;
+                if ($(this).hasClass('flipped')) return;
+
+                $(this).addClass('flipped');
+
+                if (!firstCard) {
+                    firstCard = this;
+                } else {
+                    secondCard = this;
+                    lockBoard = true;
+                    checkForMatch();
+                }
+            }
+
+            function checkForMatch() {
+                attempts++;
+                updateAttempts();
+                const firstImage = $(firstCard).find('.card-back img').attr('src');
+                const secondImage = $(secondCard).find('.card-back img').attr('src');
+
+                if (firstImage === secondImage) {
+                    resetBoard();
+                    if ($('.card.flipped').length === cardImages.length) {
+                        clearInterval(timer);
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Felicidades!',
+                            text: 'Terminaste en ' + timeElapsed + ' segundos con ' + attempts + ' intentos.',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                } else {
+                    setTimeout(() => {
+                        $(firstCard).removeClass('flipped');
+                        $(secondCard).removeClass('flipped');
+                        resetBoard();
+                    }, 1500);
+                }
+            }
+
+            function resetBoard() {
+                [firstCard, secondCard] = [null, null];
+                lockBoard = false;
+            }
+
+            function updateAttempts() {
+                $('.attempts').text('Intentos: ' + attempts);
+            }
+
+            function startTimer() {
+                timer = setInterval(() => {
+                    timeElapsed++;
+                    $('.timer').text('Time: ' + timeElapsed + ' seconds');
+                }, 1000);
+            }
+
+            function initGame() {
+                createBoard();
+                updateAttempts();
+                startTimer();
+            }
+
+            function resetGame() {
+                // Limpiar tablero y variables
+                $('.game-board').empty();
+                attempts = 0;
+                timeElapsed = 0;
+                clearInterval(timer);
+                [firstCard, secondCard] = [null, null];
+                lockBoard = false;
+                updateAttempts();
+                $('.timer').text('Time: 0 seconds');
+                createBoard();
+                startTimer();
+            }
+
+            $(document).on('click', '#restart-btn', function () {
+                resetGame();
+            });
+
+            initGame();
         });
     </script>
 </body>
+
 </html>
