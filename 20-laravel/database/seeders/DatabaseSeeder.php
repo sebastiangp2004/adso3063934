@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             AdoptionSeeder::class,
         ]);
 
-        user::factory(100)->create();
+        user::factory(50)->create();
         pet::factory(40)->create();
 
 
