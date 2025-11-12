@@ -1,4 +1,4 @@
-<x-app-layout>
+{{-- <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
@@ -14,4 +14,14 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-app-layout> --}}
+
+<h1>Dashboard</h1>
+<h2>{{ Auth::user()->fullname }}</h2>
+<h3>You're logged in!</h3>
+<form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <a href="{{ route('logout') }}" 
+    onclick="event.preventDefault();
+     this.closest('form').submit();">Logout</a>
+</form>
