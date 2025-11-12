@@ -4,39 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>List All Pets</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>List All Pets 🐻‍❄️</title>
 </head>
 <body class="bg-teal-900 p-10 min-h-[100dvh]">
-    <h1 class="text-white text-center text-4xl border-b-2 pb-4">List All Pets 🐣</h1>
+    <h1 class="text-white text-center text-4xl pb-4 border-b-2">List All Pets 🐻‍❄️</h1>
     <section class="p-10 flex gap-4 flex-wrap justify-center">
         @foreach($pets as $pet)
-        <div class="card card-side bg-base-100 shadow-sm">
-            <figure class="w-[140px] h-[200px]">
-                <img class="object-cover" src="{{asset('images/'.$pet->image)}}" alt="{{$pet->name}}" />
+            <div class="card card-side bg-base-100 shadow-sm ">
+            <figure class="w-[200px] h-[200px]">
+                <img 
+                    class="object cover"
+                    src="{{ asset('images/'. $pet->image) }}"
+                    alt="{{ $pet->image }}" />
             </figure>
             <div class="card-body">
                 <h2 class="card-title">{{$pet->name}}</h2>
+
                 @if($pet->kind == 'Dog')
-                <div class="badge badge-primary">Dog</div>
+                    <div class="badge badge-primary">Dog</div>
                 @elseif($pet->kind == 'Cat')
-                <div class="badge badge-success">Cat</div>
+                    <div class="badge badge-accent">Cat</div>
                 @elseif($pet->kind == 'Pig')
-                <div class="badge badge-secondary">Pig</div>
-                @elseif($pet->kind == 'Bird')
-                <div class="badge badge-warning">Bird</div>
+                    <div class="badge badge-secondary">Pig</div>
+                @elseif($pet->kind == 'Mini Pig')
+                    <div class="badge badge-info">MiniPig</div>
+                @elseif($pet->kind == 'Parrot')
+                    <div class="badge badge-warning">Parrot</div>
                 @endif
-                <p class="w-[200px]">{{$pet->description}}</p>
+                
+                <p class="w-[200px]">{{ $pet->description }}</p>
                 <div class="card-actions justify-end">
-                    <a class="text-white bg-teal-700 rounded-full flex items-center gap-2 py-1 px-4 hover:scale-150 transition-all" href="{{ url('view/pet/'.$pet->id) }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#000000" viewBox="0 0 256 256"><path d="M152,112a8,8,0,0,1-8,8H120v24a8,8,0,0,1-16,0V120H80a8,8,0,0,1,0-16h24V80a8,8,0,0,1,16,0v24h24A8,8,0,0,1,152,112Zm77.66,117.66a8,8,0,0,1-11.32,0l-50.06-50.07a88.11,88.11,0,1,1,11.31-11.31l50.07,50.06A8,8,0,0,1,229.66,229.66ZM112,184a72,72,0,1,0-72-72A72.08,72.08,0,0,0,112,184Z"></path></svg>
-                        View
-                    </a>
+                <a class="text-white bg-teal-700 rounded-full flex items-center gap-2 py-1 px-4 hover:scale-120 transition-all" href="{{ url('show/pet/'.$pet->id) }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fff" viewBox="0 0 256 256"><path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
+                    <strong>View</strong>
+                </a>         
                 </div>
-            </div>
+             </div>
         </div>
         @endforeach
+        
     </section>
 </body>
 </html>

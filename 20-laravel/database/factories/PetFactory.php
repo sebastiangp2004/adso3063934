@@ -16,129 +16,162 @@ class PetFactory extends Factory
      */
     public function definition(): array
     {
-        $petNames = [
-            // Dogs (20 names)
-            "Max",
-            "Buddy",
-            "Charlie",
-            "Cooper",
-            "Rocky",
-            "Bear",
-            "Duke",
-            "Jack",
-            "Tucker",
-            "Oliver",
-            "Leo",
-            "Milo",
-            "Zeus",
-            "Winston",
-            "Teddy",
-            "Murphy",
-            "Harley",
-            "Henry",
-            "Sam",
-            "Louie",
 
-            // Cats (20 names)
-            "Luna",
+        $pet_names = [
+            "Max",
             "Bella",
+            "Charlie",
             "Lucy",
-            "Chloe",
-            "Sophie",
-            "Lily",
-            "Molly",
+            "Cooper",
             "Daisy",
+            "Rocky",
+            "Luna",
+            "Bear",
+            "Bailey",
+            "Duke",
             "Zoe",
-            "Stella",
-            "Lola",
-            "Maggie",
+            "Oliver",
             "Penny",
-            "Roxy",
+            "Tucker",
+            "Coco",
+            "Bentley",
+            "Sadie",
+            "Winston",
+            "Molly",
+            "Leo",
+            "Sophie",
+            "Gus",
             "Ruby",
-            "Gracie",
-            "Rosie",
-            "Ellie",
+            "Jack",
+            "Chloe",
+            "Apollo",
+            "Stella",
+            "Milo",
+            "Piper",
+            "Zeus",
+            "Harley",
+            "Thor",
+            "Hazel",
+            "Louie",
             "Mia",
-            "Piper"
+            "Koda",
+            "Ginger",
+            "Jasper",
+            "Shadow",
+            "Buddy",
+            "Maggie",
+            "Toby",
+            "Dixie",
+            "Jax",
+            "Lola",
+            "Prince",
+            "Abby",
+            "Moose",
+            "Nala",
+            "Bandit",
+            "Riley",
+            "Sam",
+            "Willow",
+            "Oscar",
+            "Maya",
+            "Teddy",
+            "Rosie",
+            "Simba",
+            "Lily",
+            "Frankie",
+            "Skylar",
+            "Finn",
+            "Pepper",
+            "Chewie",
+            "Nova",
+            "Bruce",
+            "Raven",
+            "Otis",
+            "Athena",
+            "Ace",
+            "Jasmine",
+            "Remy",
+            "Jade",
+            "Ziggy",
+            "Zara",
+            "Hank",
+            "Cleo",
+            "Marley",
+            "Winnie"
         ];
 
-        $dogBreeds = [
+        $dogs_breeds = [
             "Labrador Retriever",
-            "German Shepherd",
             "French Bulldog",
+            "German Shepherd",
             "Golden Retriever",
             "Poodle",
-            "Bulldog",
             "Beagle",
             "Rottweiler",
-            "Siberian Husky",
-            "Chihuahua"
+            "Boxer",
+            "Dachshund",
+            "Siberian Husky"
         ];
 
-        $catBreeds = [
+        $cats_breeds = [
+            "Domestic Shorthair",
+            "American Shorthair",
+            "Maine Coon",
+            "Ragdoll",
             "Persian",
             "Siamese",
-            "Maine Coon",
-            "British Shorthair",
             "Bengal",
+            "British Shorthair",
             "Sphynx",
-            "Ragdoll",
-            "Abyssinian",
-            "Scottish Fold",
-            "Russian Blue"
+            "Abyssinian"
         ];
 
-        $birdBreeds = [
-            "Parakeet",
-            "Canary",
-            "Cockatiel",
-            "Lovebird",
-            "African Grey Parrot",
-            "Macaw",
-            "Finch",
-            "Cockatoo",
+        $parrots_breeds = [
             "Budgerigar",
-            "Amazon Parrot"
+            "Cockatiel",
+            "African Grey Parrot",
+            "Amazon Parrot",
+            "Macaw",
+            "Cockatoo",
+            "Conure",
+            "Lovebird",
+            "Quaker Parrot",
+            "Indian Ringneck Parakeet"
         ];
 
-        $pigBreeds = [
-            "Yorkshire",
-            "Duroc",
-            "Berkshire",
-            "Hampshire",
-            "Landrace",
-            "Chester White",
-            "Tamworth",
-            "Large Black",
-            "Pietrain",
-            "Vietnamese Pot-bellied"
+        $pigs_breeds = [
+            "Pot-Bellied Pig",    
+            "KuneKune",            
+            "Juliana Pig",         
+            "American Mini Pig",   
+            "Göttingen Mini Pig",
         ];
 
-        $kind = fake()->randomElement(['Dog', 'Cat', 'Bird', 'Pig']);
+        $kind = fake()->randomElement(array('Dog', 'Cat', 'Pig', 'Parrot'));
 
         switch ($kind) {
             case 'Dog':
-                $breed = fake()->randomElement($dogBreeds);
+                $breed = fake()->randomElement($dogs_breeds);
                 break;
             case 'Cat':
-                $breed = fake()->randomElement($catBreeds);
-                break;
-            case 'Bird':
-                $breed = fake()->randomElement($birdBreeds);
+                $breed = fake()->randomElement($cats_breeds);
                 break;
             case 'Pig':
-                $breed = fake()->randomElement($pigBreeds);
+                $breed = fake()->randomElement($pigs_breeds);
+                break;
+            case 'Parrot':
+                $breed = fake()->randomElement($parrots_breeds);
                 break;
         }
 
         return [
-            'name' => fake()->randomElement($petNames),
-            'kind' => $kind,
-            'weight' => fake()->numerify('#.#'),
-            'age' => fake()->numerify('#'),
-            'breed' => $breed,
-            'location' => fake()->city(),
-            'description' => fake()->sentence(8),
+            'name'          => fake()->randomElement($pet_names),
+            'kind'          => $kind,
+            'weight'        => fake()->numerify('#.#'),
+            'age'           => fake()->numerify('#'),
+            'breed'         => $breed,
+            'location'      => fake()->city(),
+            'description'   => fake()->sentence(8)
         ];
     }
 }

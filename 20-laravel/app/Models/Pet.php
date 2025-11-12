@@ -23,16 +23,13 @@ class Pet extends Model
         'location',
         'description',
         'active',
-        'status',
+        'status'
     ];
 
-    // Relationships
+    // RelationShips
     // Pet hasOne Adoption
     public function adoption()
     {
-        return $this->hasOne(Adoption::class);
-        
+        return $this->belongsTo(Adoption::class);
     }
-
-
 }

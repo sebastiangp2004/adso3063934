@@ -13,20 +13,16 @@ class Adoption extends Model
      */
     protected $fillable = [
         'user_id',
-        'pet_id',
+        'pet_id'
     ];
 
-    // Relationships
-    // Adoption belongsTo User
-    public function user()
-    {
+    // RelationShips
+    // Adoption belongTo  User
+    public function user() {
         return $this->belongsTo(User::class);
     }
-
-    // Adoption belongsTo Pet
-    public function pet()
-    {
+    // Adoption belongTo Pet
+    public function pet() {
         return $this->belongsTo(Pet::class);
     }
-
 }
