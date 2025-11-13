@@ -1,27 +1,13 @@
-{{-- <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout> --}}
 
-<h1>Dashboard</h1>
+@extends('layouts.dashboard')
+@section('title', 'Dashboard ADMIN: Larapets 🐕‍🦺')
+@section('content')
+
+<div class="text-white bg-center bg-cover bg-fixed w-full flex flex-col gap-4 items-center justify-center ">
+    <h1>Dashboard</h1>
 <h2>{{ Auth::user()->fullname }}</h2>
 <h3>You're logged in!</h3>
-<form method="POST" action="{{ route('logout') }}">
-    @csrf
-    <a href="{{ route('logout') }}" 
-    onclick="event.preventDefault();
-     this.closest('form').submit();">Logout</a>
-</form>
+
+</div>
+@endsection

@@ -53,7 +53,7 @@
 
 @extends('layouts.home')
 
-@section('title', 'login: Larapets🐕‍🦺')
+@section('title', 'register: Larapets🐕‍🦺')
 
 @section('content')
 <section id="section"
@@ -157,7 +157,5 @@
 
         </form>
     </div>
-
-
 </section>
 @endsection
