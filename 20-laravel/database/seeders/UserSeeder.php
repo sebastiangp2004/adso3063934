@@ -18,12 +18,12 @@ class UserSeeder extends Seeder
         // ORM -> Eloquent
         $user = new User;
         $user->document = 75000001;
-        $user->fullname = 'Juan Camilo Hernandez';
+        $user->fullname = 'Sebastian Grajales Pineda';
         $user->gender = 'Male';
-        $user->birthdate = '2006-01-27';
-        $user->phone = '3134520832';
-        $user->email = 'juvid@gmail.com';
-        $user->password = bcrypt('admin2727');
+        $user->birthdate = '2004-04-19';
+        $user->phone = '3052077923';
+        $user->email = 'sebastiangp20044@gmail.com';
+        $user->password = bcrypt('admin');
         $user->role = 'Administrador';
         $user->save();
 
@@ -31,12 +31,12 @@ class UserSeeder extends Seeder
         // Insert -> Array
         DB::table('users')->insert([
             'document' => 75000002,
-            'fullname' => 'Milo Gil',
+            'fullname' => 'Milo',
             'gender' => 'Male',
             'birthdate' => '2006-01-28',
             'phone' => '3134520833',
             'email' => 'milo@gmail.com',
-            'password' => Hash::make('milo0606'),
+            'password' => Hash::make('milo'),
             'created_at' => now()
         ]);
     }
