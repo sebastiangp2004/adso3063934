@@ -145,6 +145,26 @@
     </table>
 </div>
 
+{{-- modal --}}
+<dialog id="success_modal" class="modal">
+    <div class="modal-box bg-success/20 border border-success">
+        <h3 class="text-lg font-bold">Congratulations!</h3>
+        <p class="py-4">{{ session('success') }}</p>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
 
+
+@endsection
+
+@section('js')
+<script>
+    @if(session('success'))
+    const success_modal = document.getElementById('success_modal');
+    success_modal.showModal();
+    @endif
+</script>
 
 @endsection
