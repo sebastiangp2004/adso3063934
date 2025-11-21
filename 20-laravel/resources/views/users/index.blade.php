@@ -123,7 +123,8 @@
                                 </path>
                             </svg>
                         </a>
-                        <a href="" class="group badge badge-outline">
+                        <a href="javascript:;" class="group badge badge-outline btn-delete"
+                            data-fullname="{{ $user->fullname }}">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="size-5 hover:scale-120 group-hover:text-red-500 transition" fill="currentColor"
                                 viewBox="0 0 256 256">
@@ -132,6 +133,12 @@
                                 </path>
                             </svg>
                         </a>
+
+                        <form class="hidden" method="POST" action="{{ url('users/'.$user->id) }}">
+                            @csrf
+                            @method('delete')
+
+                        </form>
                     </div>
                 </td>
             </tr>
@@ -145,14 +152,53 @@
     </table>
 </div>
 
-{{-- modal --}}
+{{-- Modal --}}
 <dialog id="success_modal" class="modal">
-    <div class="modal-box bg-success/20 border border-success">
-        <h3 class="text-lg font-bold">Congratulations!</h3>
-        <p class="py-4">{{ session('success') }}</p>
+    <div class="modal-box bg-sucess">
+        <h3 class="text-lg font-bold">Congrats!</h3>
+        <div role="alert" class="alert alert-soft alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>{{session('success')}}</span>
+        </div>
     </div>
     <form method="dialog" class="modal-backdrop">
         <button>close</button>
+    </form>
+</dialog>
+
+
+
+<dialog id="delete_modal" class="modal">
+
+    <div class="modal-box bg-sucess">
+
+        <div class="flex justify-between">
+            <h3 class="text-lg font-bold">Are you sure?</h3>
+            <form method="dialog">
+                <button class="btn btn-soft btn-error w-8 h-8">
+                    x
+                </button>
+            </form>
+        </div>
+        <div role="alert"
+            class="alert alert-soft alert-info mt-4 flex flex-col md:flex-row gap-4 md:gap-2 justify-between items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                class="h-6 w-6 shrink-0 stroke-current">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>You want to deleted: <strong class="fullname"></strong></span>
+            <button class="btn btn-soft btn-error btn-confirm">Confirm</button>
+
+        </div>
+
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>Cancel</button>
     </form>
 </dialog>
 
@@ -161,10 +207,25 @@
 
 @section('js')
 <script>
+    // Modal success
     @if(session('success'))
     const success_modal = document.getElementById('success_modal');
     success_modal.showModal();
     @endif
+
+    // Module Delete
+    $('table').on('click', '.btn-delete', function(){
+        $fullname = $(this).data('fullname')
+        $('.fullname').text($fullname)
+        $frm = $(this).next()
+        delete_modal.showModal()
+    })
+    $('.btn-confirm').click(function(e){
+        e.preventDefault()
+            $frm.submit()
+    })
+
+
 </script>
 
 @endsection

@@ -71,7 +71,7 @@
                 <span class="text-[#ffffffe1] font-semibold">Gender:</span><span>{{ $user->gender }}</span>
             </li>
             <li class="list-row">
-                <span class="text-[#ffffffe1] font-semibold">BirthDate:</span><span>{{ $user->birthdate }}</span>
+                <span class="text-[#ffffffe1] font-semibold">Age:</span><span>{{Carbon\Carbon::parse($user->birthdate)->age}} Years Old</span>
             </li>
             <li class="list-row">
                 <span class="text-[#ffffffe1] font-semibold">Phone:</span><span>{{ $user->phone }}</span>
