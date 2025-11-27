@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
@@ -125,12 +126,34 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
-    {   
-        if($user->photo != 'no-photo.png'){
-            unlink(public_path('images/'.$user->photo));
+    {
+        if ($user->photo != 'no-photo.png') {
+            unlink(public_path('images/' . $user->photo));
         }
-        if($user->delete()){
-            return redirect('users')->with('success', 'User '.$user->fullname.' was successfully deleted.');
+        if ($user->delete()) {
+            return redirect('users')->with('success', 'User ' . $user->fullname . ' was successfully deleted.');
         }
+    }
+    // search
+
+    public function search(Request $request)
+    {
+
+        $users = User::names($request->q)->orderBy('id', 'desc')->paginate(20);
+        return view('users.search')->with('users', $users);
+    }
+
+    // export to PDF
+    public function pdf()
+    {
+        $users = User::all();
+        $pdf = Pdf::loadView('users.pdf', compact('users'));
+        return $pdf->download('allusers.pdf');
+    }
+
+    // export to Excel
+    public function excel()
+    {
+        return 'EXCEL';
     }
 }
