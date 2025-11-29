@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
     // export
     Route::get('export/users/pdf', [UserController::class, 'pdf']);
     Route::get('export/users/excel', [UserController::class, 'excel']);
+    Route::post('import/users',[UserController::class,'import']);
 });
 
 Route::get('/', function () {
