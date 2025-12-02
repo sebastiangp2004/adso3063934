@@ -32,4 +32,11 @@ class Pet extends Model
     {
         return $this->belongsTo(Adoption::class);
     }
+
+    public function scopenames($pets,$q){
+        if(trim($q)){
+            $pets->where('name','LIKE',"%$q%")
+            ->orWhere('kind','LIKE',"%$q%");
+        }
+    }
 }
