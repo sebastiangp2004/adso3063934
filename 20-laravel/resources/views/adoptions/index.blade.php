@@ -31,37 +31,50 @@
     </a>
 </div>
 
-@foreach ($adopts as $adopt)
-<div class="card bg-[#99a1af99] mb-5 p-5 text-center datalist">
-    <div class="avatar-group m-8 -space-x-6">
-        <div class="avatar border-black">
-            <div class="w-36">
-                <img src="{{ asset('images/' . $adopt->user->photo) }}" />
-            </div>
-        </div>
-        <div class="avatar border-black">
-            <div class="w-36">
-                <img src="{{ asset('images/' . $adopt->pet->image) }}" />
-            </div>
-        </div>
-    </div>
-    <h4 class="mb-4">
-        <span class="underline font-bold">{{ $adopt->pet->name }}</span>
-        was adopted by
-        <span class="underline font-bold">{{ $adopt->user->fullname }}</span>
-        on {{ $adopt->created_at->diffForHumans() }}
-    </h4>
-    <a href="{{ url('adoptions/' . $adopt->id) }}" class="btn btn-soft btn-info ">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="currentColor" viewBox="0 0 256 256">
-            <path
-                d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z">
-            </path>
-        </svg>
-        More info
-    </a>
-</div>
-@endforeach
+{{-- buscar --}}
+<label class="input bg-white rounded-full flex items-center gap-2 px-3 py-1">
+    <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+        </g>
+    </svg>
+    <input type="search" placeholder="Search..." name="qsearch" id="qsearch" />
+</label>
 
+@csrf
+<div class="datalist">
+    @foreach ($adopts as $adopt)
+    <div class="card bg-[#99a1af99] mb-5 p-5 text-center datalist">
+        <div class="avatar-group m-8 -space-x-6">
+            <div class="avatar border-black">
+                <div class="w-36">
+                    <img src="{{ asset('images/' . $adopt->user->photo) }}" />
+                </div>
+            </div>
+            <div class="avatar border-black">
+                <div class="w-36">
+                    <img src="{{ asset('images/' . $adopt->pet->image) }}" />
+                </div>
+            </div>
+        </div>
+        <h4 class="mb-4">
+            <span class="underline font-bold">{{ $adopt->pet->name }}</span>
+            was adopted by
+            <span class="underline font-bold">{{ $adopt->user->fullname }}</span>
+            on {{ $adopt->created_at->diffForHumans() }}
+        </h4>
+        <a href="{{ url('adoptions/' . $adopt->id) }}" class="btn btn-soft btn-info ">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="currentColor" viewBox="0 0 256 256">
+                <path
+                    d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z">
+                </path>
+            </svg>
+            More info
+        </a>
+    </div>
+    @endforeach
+</div>
 @endsection
 
 @section('js')
@@ -92,7 +105,11 @@
         event.preventDefault()
         const query = $(this).val()
         
-        $('.datalist').html(`#`)
+        $('.datalist').html(`<div class="flex justify-center items-center my-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-10 animate-spin text-white opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+             </svg>`)
         
         if(query != ''){
             search(query)

@@ -17,31 +17,31 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::resources([
-        'users' => UserController::class,
-        'pets' => PetController::class,
-    ]);
-    //Adoption
-    Route::get('adoptions', [AdoptionController::class, 'index']);
-    Route::get('adoptions/{id}', [AdoptionController::class, 'show']);
-    
-    // search
-    Route::post('search/users', [UserController::class, 'search']);
-    Route::post('search/pets', [PetController::class, 'search']);
-    Route::post('search/pets', [AdoptionController::class, 'search']);
+    Route::group(['middleware' => 'admin'], function () {
+        Route::resources([
+            'users' => UserController::class,
+            'pets' => PetController::class,
+        ]);
+        //Adoption
+        Route::get('adoptions', [AdoptionController::class, 'index']);
+        Route::get('adoptions/{id}', [AdoptionController::class, 'show']);
 
-    // export
-    Route::get('export/users/pdf', [UserController::class, 'pdf']);
-    Route::get('export/users/excel', [UserController::class, 'excel']);
-    Route::post('import/users',[UserController::class,'import']);
+        // search
+        Route::post('search/users', [UserController::class, 'search']);
+        Route::post('search/pets', [PetController::class, 'search']);
+        Route::post('search/adoptions', [AdoptionController::class, 'search']);
 
-    Route::get('export/pets/pdf', [PetController::class, 'pdf']);
-    Route::get('export/pets/excel', [PetController::class, 'excel']);
+        // export
+        Route::get('export/users/pdf', [UserController::class, 'pdf']);
+        Route::get('export/users/excel', [UserController::class, 'excel']);
+        Route::post('import/users', [UserController::class, 'import']);
 
-    Route::get('export/adoptions/pdf', [AdoptionController::class, 'pdf']);
-    Route::get('export/adoptions/excel', [AdoptionController::class, 'excel']);
+        Route::get('export/pets/pdf', [PetController::class, 'pdf']);
+        Route::get('export/pets/excel', [PetController::class, 'excel']);
 
-
+        Route::get('export/adoptions/pdf', [AdoptionController::class, 'pdf']);
+        Route::get('export/adoptions/excel', [AdoptionController::class, 'excel']);
+    });
 });
 
 Route::get('/', function () {
@@ -190,4 +190,4 @@ Route::get('show/pet/{id}', function () {
     return view('show-pet')->with('pet', $pet);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
