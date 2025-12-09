@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('makeadoptions/') }}">
+                    <a href="{{ url('makeadoption/') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="currentColor"
                             viewBox="0 0 256 256">
                             <path
