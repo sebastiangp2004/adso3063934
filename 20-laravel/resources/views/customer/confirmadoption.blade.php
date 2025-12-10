@@ -107,7 +107,7 @@
     <div class="flex justify-center mt-6">
         <form action="{{ url('makeadoption/'.$pet->id) }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn-outline btn-primary btn-lg">Adopt {{ $pet->name }}</button>
+            <button type="submit" class="btn btn-outline btn-success btn-lg">Adopt {{ $pet->name }}</button>
         </form>
     </div>
 

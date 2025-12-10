@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Pet;
 use App\Models\User;
 use App\Models\Adoption;
@@ -21,28 +22,26 @@ class CustomerController extends Controller
     public function updatemyprofile(Request $request)
     {
         //dd($request->all());
-         // dd($request->all());
-       $validation = $request->validate([
-            'document'  => ['required', 'numeric', 'unique:' .User::class . ',document,' . $request->id],
+        // dd($request->all());
+        $validation = $request->validate([
+            'document'  => ['required', 'numeric', 'unique:' . User::class . ',document,' . $request->id],
             'fullname'  => ['required', 'string', 'max:255'],
             'gender'    => ['required'],
             'birthdate' => ['required', 'date'],
             'phone'     => ['required'],
-            'email'     => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class . ',email,' . $request->id],
+            'email'     => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class . ',email,' . $request->id],
         ]);
-        if($validation)
-        {
+        if ($validation) {
             //dd($request->all());
-            if($request->hasFile('photo')) {
-                $photo = time().'.'.$request->photo->extension();
+            if ($request->hasFile('photo')) {
+                $photo = time() . '.' . $request->photo->extension();
                 $request->photo->move(public_path('images'), $photo);
-                if($request->originPhoto != 'no-photo.png'){
-                    unlink(public_path('images/'). $request->originPhoto);
+                if ($request->originPhoto != 'no-photo.png') {
+                    unlink(public_path('images/') . $request->originPhoto);
                 }
             } else {
-                    $photo = $request->originPhoto;
-                }
-
+                $photo = $request->originPhoto;
+            }
         }
         $user = User::find($request->id);
         $user->document     = $request->document;
@@ -52,24 +51,23 @@ class CustomerController extends Controller
         $user->photo        = $photo;
         $user->phone        = $request->phone;
         $user->email        = $request->email;
-        if($user->save())
-        {
+        if ($user->save()) {
             return redirect('dashboard')->with('success', value: 'My profile was seccessfully edited!');
         }
-    } 
+    }
 
     //My Adoptions
     public function myadoptions()
     {
-        $adopts = Adoption::where('user_id', Auth::user()->id)->get();
+        $adopts = Adoption::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
 
         return view('customer.myadoptions')->with('adopts', $adopts);
     }
 
     public function showadoption(Request $request)
     {
-       $adopt = Adoption::find($request->id);
-       return view('customer.showadoption')->with('adopt', $adopt);
+        $adopt = Adoption::find($request->id);
+        return view('customer.showadoption')->with('adopt', $adopt);
     }
 
     //Make Adoption
@@ -87,7 +85,20 @@ class CustomerController extends Controller
 
     public function makeadoption(Request $request)
     {
-        
+        // generar nueva adopcion
+        $adopt = new Adoption();
+        $adopt->user_id = Auth::user()->id;
+        $adopt->pet_id = $request->id;
+        $adopt->created_at = now();
+        $adopt->updated_at = now();
+        if ($adopt->save()) {
+            // actualizar estado de la mascota
+            $pet = Pet::find($request->id);
+            $pet->status = 1; // adoptado
+            if ($pet->save()) {
+                return redirect('myadoptions')->with('success', value: Auth::user()->fullname . ' has adopted ' . $pet->name . '!');
+            }
+        }
     }
 
     public function search(Request $request)

@@ -278,6 +278,8 @@
                     </path>
                 </svg>
                 My Adoptions
+                <div class="badge badge-primary">{{ App\Models\Adoption::where('user_id', Auth::user()->id)->count() }}
+                </div>
             </h2>
             {{-- Stats --}}
             <div class="card-actions justify-end">
