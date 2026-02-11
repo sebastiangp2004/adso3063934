@@ -1,20 +1,26 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PetController;
+use App\Http\Controllers\API\AuthController;
 
-// Endpoint: http://127.0.0.1:8000/api/pets/list
-Route::get('pets/list', [PetController::class, 'index']);
+// Rutas públicas
+Route::post('login', [AuthController::class, 'login']);
+Route::get('/test', function() {
+    return ['message' => 'API funciona'];
+});
 
-// Endpoint: http://127.0.0.1:8000/api/pets/show/12
-Route::get('pets/show/{id}', [PetController::class, 'show']);
+// Rutas protegidas con Sanctum
+Route::middleware( 'auth:sanctum')->group(function () {
 
-// Endpoint: http://127.0.0.1:8000/api/pets/store
-Route::post('pets/store', [PetController::class, 'store']);
+    // Logout
+    Route::post('logout', [AuthController::class, 'logout']);
 
-// Endpoint: http://127.0.0.1:8000/api/pets/edit/12
-Route::put('pets/edit/{id}', [PetController::class, 'update']);
+    // Rutas de Pets protegidas
+    Route::get('pets/list', [PetController::class, 'index']);
+    Route::get('pets/show/{id}', [PetController::class, 'show']);
+    Route::post('pets/store', [PetController::class, 'store']);
+    Route::put('pets/edit/{id}', [PetController::class, 'update']);
+    Route::delete('pets/delete/{id}', [PetController::class, 'destroy']);
 
-// Endpoint: http://127.0.0.1:8000/api/pets/delete/12
-Route::delete('pets/delete/{id}', [PetController::class, 'destroy']);
+});

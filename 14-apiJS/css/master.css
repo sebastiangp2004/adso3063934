@@ -1,0 +1,224 @@
+/* fonts */
+@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400..700&display=swap');
+
+/* Body */
+body {
+    font-family: Monda;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    min-height: 100dvh;
+
+
+
+    #login {
+        img {
+            filter: brightness(0) saturate(100%) invert(71%) sepia(77%) saturate(381%) hue-rotate(135deg) brightness(103%) contrast(102%);
+        }
+
+        h1 {
+            color: #F7F6F7;
+            font-size: 20px;
+        }
+    }
+
+
+    /* Main  */
+    main {
+        background-color: #F7F6F7;
+        height: 526px;
+        width: 246px;
+        border-radius: 5px;
+        position: relative;
+        overflow: auto;
+
+        h2 {
+            color: #045B6A;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* hide */
+        &.hide {
+            display: none;
+        }
+
+
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            padding: 0 2rem;
+            bottom: 8rem;
+            gap: 2rem;
+
+            label {
+                display: flex;
+                flex-direction: column;
+
+                input {
+                    padding: 0.5rem;
+                    border-radius: 10px;
+                    border: 1px solid #045B6A;
+                    outline: none;
+
+                    &:focus {
+                        border-color: #045B6A;
+                        box-shadow: 0 0 5px #045B6A;
+                    }
+                }
+            }
+
+            button {
+                padding: 0.5rem 1rem;
+                border-radius: 5px;
+                border: none;
+                background-color: #045B6A;
+                color: #F7F6F7;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                width: 160px;
+                height: 30px;
+                transition: transform 0.3s ease, background-color 0.3s ease;
+
+                &:hover {
+                    transform: scale(1.05);
+                    background-color: #033E4D;
+                }
+            }
+        }
+
+        /* Dashboard */
+        &#Dashboard {
+
+
+            img.tittle {
+                filter: brightness(0) saturate(100%) invert(71%) sepia(77%) saturate(381%) hue-rotate(135deg) brightness(103%) contrast(102%);
+            }
+
+            h1.tittle {
+                color: #F7F6F7;
+                font-size: 20px;
+            }
+
+
+
+            nav {
+                img.icon {
+                    filter: brightness(0) saturate(100%) invert(23%) sepia(78%) saturate(1054%) hue-rotate(149deg) brightness(95%) contrast(101%);
+                }
+
+                padding-top: 4rem;
+                display: flex;
+                justify-content: space-between;
+                margin: 0 5px;
+                transition: transform 0.3s ease;
+
+                a,
+                link,
+                a:visited {
+                    color: #045B6A;
+                    text-decoration: none;
+                    font-weight: bold;
+
+                    &:hover {
+                        cursor: pointer;
+                        transform: scale(1.05);
+                    }
+                }
+
+            }
+
+            section.list {
+                display: flex;
+                gap: 0.4rem;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                div.row {
+                    &:nth-child(even) {
+                        background-color: #E0E0E0;
+                    }
+                    background-color: #7b7b7b;
+                    border-radius: 5px;
+                    display: flex;
+                    gap: 0.4rem;
+                    padding: 0.2rem;
+                    height: 34px;
+                    width: 226px;
+                    img.img{
+                        width: 40px;
+                    }
+
+                    div.data {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: start;
+                        justify-content: center;
+
+                        h3 {
+                            font-size: 12px;
+                            font-weight: 500;
+                            margin: 0;
+                        }
+
+                        h4 {
+                            font-size: 10px;
+                            font-weight: 400;
+                            margin: 0;
+                        }
+                    }
+
+                    nav.actions {
+                        
+                        padding-top: 0;
+                        display: flex;
+                        gap: 0.5rem;
+
+                        a,
+                        link,
+                        a:visited {
+                            height: 26px;
+                            width: 26px;
+
+                            &.btnShow {
+
+                                filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(103%) contrast(103%);
+
+                            }
+
+                            &.btnEdit {
+                                filter: brightness(0) saturate(100%) invert(71%) sepia(77%) saturate(381%) hue-rotate(135deg) brightness(103%) contrast(102%);
+                            }
+
+                            &.btnDelete {
+                                filter: brightness(0) saturate(100%) invert(13%) sepia(100%) saturate(7485%) hue-rotate(0deg) brightness(103%) contrast(119%);
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        header {
+            background-color: #045B6A;
+            border-radius: 5px 5px 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            position: fixed;
+            width: 246px;
+        }
+    }
+
+}
