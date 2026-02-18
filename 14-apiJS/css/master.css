@@ -326,7 +326,7 @@ body {
             align-items: center;
             height: 50px;
             position: fixed;
-            z-index: 2;
+            z-index: 999;
             width: 246px;
 
 
