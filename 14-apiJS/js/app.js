@@ -51,7 +51,7 @@ loginForm.addEventListener('submit', async function (e) {
                 title: 'whatch out!',
                 text: data.message,
                 showConfirmButton: false,
-                timer: 500
+                timer: 1500
             });
             localStorage.setItem('auth-token', data.token)
             localStorage.setItem('currentView', 0)
@@ -88,7 +88,7 @@ async function listPets() {
 
             // Recorremos el arreglo de mascotas que viene en data.pets (según tu captura de pantalla)
             data.pets.forEach(pet => {
-                listContainer.innerHTML += `
+                listContainer.innerHTML += ` 
                     <div class="row">
                         <img class="img" src="images/${pet.image}" alt="${pet.name}">
                         <div class="data">
