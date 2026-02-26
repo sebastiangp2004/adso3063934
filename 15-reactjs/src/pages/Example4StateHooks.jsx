@@ -11,8 +11,8 @@ function Example4StateHooks() {
         { id: 4, name: 'Squirtle', type: 'Water', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png', legendary: false },
         { id: 5, name: 'Mewtwo', type: 'Psychic', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png', legendary: true },
         { id: 6, name: 'moltres', type: 'Fire', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png', legendary: true },
-        { id: 7, name: 'Zapdos', type: 'Electric', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png', legendary: false },
-        { id: 8, name: 'Articuno', type: 'Ice', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/149.png', legendary: false },
+        { id: 7, name: 'Zapdos', type: 'Electric', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png', legendary: true },
+        { id: 8, name: 'Articuno', type: 'Ice', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/144.png', legendary: true },
         { id: 9, name: 'Gengar', type: 'Ghost', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png', legendary: false },
         { id: 10, name: 'Venusaur', type: 'Grass', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png', legendary: false },
         { id: 11, name: 'Charizard', type: 'Fire', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png', legendary: false },
@@ -20,6 +20,7 @@ function Example4StateHooks() {
         { id: 13, name: 'Dragonite', type: 'Dragon', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/149.png', legendary: false },
         { id: 14, name: 'Onix', type: 'Rock', Image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/95.png', legendary: false },
         { id: 15, name: 'Machamp', type: 'Fighting', Image:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/68.png', legendary: false },
+        { id: 16, name: 'Eevee', type: 'normal', Image:'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png', legendary: false}
     ];
 
     // 1. ESTADOS
@@ -98,7 +99,7 @@ function Example4StateHooks() {
         <div className="container">
             <BtnBack />
             <h2>Example 4: Pokedex Challenge</h2>
-            <p>Atrapa a los 40 Pokémon disponibles.</p>
+            <p>Atrapa a los {pokemons.length} Pokémon disponibles.</p>
 
             <div style={{ textAlign: 'center' }}>
                 {!wildPokemon ? (
@@ -148,6 +149,7 @@ function Example4StateHooks() {
                             <img src={p.Image} alt={p.name} style={{ width: '70px' }} />
                             <p><strong>{p.name}</strong></p>
                             <p style={{ color: typeColors[p.type?.toLowerCase()] || '#ccc' }}><strong>{p.type}</strong></p>
+                            <p style={{ color: '#F8D030' }}>{p.legendary && <p>Legendary</p>}</p>
                             
                         </div>
                     ))}
