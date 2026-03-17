@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {Swal} from "sweetalert2";
+import Swal from "sweetalert2";
 
 function Dashboard() {
 
@@ -79,15 +79,31 @@ function Dashboard() {
         "brightness(0) saturate(100%) invert(13%) sepia(100%) saturate(7485%) hue-rotate(0deg) brightness(103%) contrast(119%)"
     }
   };
+
   const [pets, setPets] = useState([]);
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
+
+   const token = localStorage.getItem("authToken");
+
+
+   
     if (!token) {
-      navigate("/");
-      return;
+
+      Swal.fire({
+        icon: "error",
+        title: "Invalid token",
+        text: "Your session is not valid. Please login again.",
+        confirmButtonText: "Go to login"
+      }).then(() => {
+        localStorage.removeItem("authToken");
+        navigate("/");
+      });
+
     }
+
   }, [navigate]);
 
   const listPets = async () => {
@@ -103,13 +119,72 @@ function Dashboard() {
       );
       setPets(res.data.pets);
     } catch (error) {
-      console.error("Error fetching pets:", error);
+      Swal.fire({
+        title: "Error loading pets",
+        text: "Please try again later.",
+        icon: "error",
+        timer: 2000,
+
+    }). then(() => {
+        localStorage.removeItem("authToken");
+        navigate("/");
+      });
     }
   };
 
   useEffect(() => {
     listPets();
   }, []);
+
+  const deletePet = async (id) => {
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!"
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const token = localStorage.getItem("authToken");
+
+        await axios.delete(
+          `http://127.0.0.1:8000/api/pets/delete/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
+        Swal.fire({
+          icon: "success",
+          title: "Pet deleted successfully",
+          timer: 1500,
+          showConfirmButton: false
+        });
+
+        listPets();
+
+      } catch (error) {
+        console.error("Error deleting pet:", error);
+
+        Swal.fire({
+          icon: "error",
+          title: "Error deleting pet"
+        });
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    navigate("/");
+  };
 
   return (
     <main id="Dashboard" className="dashboard">
@@ -126,7 +201,7 @@ function Dashboard() {
         </Link>
 
         <Link to="/">
-          <button type="button" className="btnLogout">
+          <button type="button" className="btnLogout" onClick={handleLogout}>
             <img className="icon" src="/imgs/sign-out.svg" alt="Logout Icon" />
           </button>
         </Link>
@@ -162,11 +237,9 @@ function Dashboard() {
                   <img src="/imgs/pencil.svg" style={{ ...styles.button, ...styles.btnEdit }} alt="edit" />
                 </button>
               </Link>
-              <Link to={`/delete/${pet.id}`}>
-                <button type="button">
-                  <img src="/imgs/trash.svg" style={{ ...styles.button, ...styles.btnDelete }} alt="delete" />
-                </button>
-              </Link>
+              <button type="button" onClick={() => deletePet(pet.id)}>
+                <img src="/imgs/trash.svg" style={{ ...styles.button, ...styles.btnDelete }} alt="delete" />
+              </button>
             </nav>
           </div>
         ))}

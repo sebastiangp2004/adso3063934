@@ -20,6 +20,9 @@ class PetController extends Controller
         } else {
             return response()->json(['message' => 'successful Query 🐶', 'pets' => $pets], 200);
         }
+
+
+        
     }
 
 
@@ -61,6 +64,7 @@ class PetController extends Controller
         } else {
             return response()->json(['message' => 'successful Query 🐕', 'pet' => $pet], 200);
         }
+        
     }
 
 

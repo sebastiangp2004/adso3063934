@@ -1,78 +1,84 @@
 import BtnBack from "../components/BtnBack";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 
 function Edit() {
   const { id } = useParams();
-
-  const [pet, setPet] = useState(null);
   const navigate = useNavigate();
+  const [pet, setPet] = useState(null);
 
   useEffect(() => {
-    const fetchPet = async () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+
+      Swal.fire({
+        icon: "error",
+        title: "Invalid token",
+        text: "Your session is not valid. Please login again.",
+        confirmButtonText: "Go to login"
+      }).then(() => {
+        localStorage.removeItem("authToken");
+        navigate("/");
+      });
+
+    }
+
+    const searchPet = async () => {
       try {
-        const token = localStorage.getItem("authToken");
-
-        const res = await fetch(`http://127.0.0.1:8000/api/pets/show/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${token}`
+        const res = await axios.get(
+          `http://127.0.0.1:8000/api/pets/show/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           }
-        });
-
-        if (!res.ok) {
-          throw new Error("Error fetching pet");
-        }
-
-        const data = await res.json();
-        setPet(data.pet);
-
+        );
+        setPet(res.data.pet);
       } catch (error) {
-        console.error("Error fetching pet:", error);
+        Swal.fire({
+        title: "Error loading pets",
+        text: "Please try again later.",
+        icon: "error",
+        timer: 2000,
+
+      }).then(() => {
+        navigate("/dashboard");
+      })
       }
     };
 
-    fetchPet();
-  }, [id]);
+    searchPet();
+  }, [id, navigate]);
 
   const updatePet = async () => {
     try {
       const token = localStorage.getItem("authToken");
-
-      const res = await fetch(`http://127.0.0.1:8000/api/pets/edit/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(pet)
-      });
-
-      if (!res.ok) {
-        throw new Error("Error updating pet");
-      }
-
-      const data = await res.json();
-
-      console.log("Pet updated:", data);
-
-      // Swal.fire({
-      //   title: "¡Éxito!",
-      //   text: data.message,
-      //   icon: "success",
-      //   showConfirmButton: false,
-      //   timer: 1500
-      // });
-
+      await axios.put(
+        `http://127.0.0.1:8000/api/pets/edit/${id}`,
+        pet,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      Swal.fire("Success", "Pet updated successfully!", "success");
       navigate("/dashboard");
-
     } catch (error) {
-      console.error("Error updating pet:", error);
+      Swal.fire({
+        title: "Error loading pets",
+        text: "Please try again later.",
+        icon: "error",
+        timer: 2000,
+
+      }).then(() => {
+        localStorage.removeItem("authToken");
+        navigate("/");
+      });
     }
   };
 

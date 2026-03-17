@@ -5,13 +5,12 @@ use App\Http\Controllers\API\PetController;
 use App\Http\Controllers\API\AuthController;
 
 // Rutas públicas
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('/test', function() {
     return ['message' => 'API funciona'];
 });
 
-// Rutas protegidas con Sanctum
-Route::middleware( 'auth:sanctum')->group(function () {
+Route::middleware([\App\Http\Middleware\CheckApiToken::class, 'auth:sanctum'])->group(function () {
 
     // Logout
     Route::post('logout', [AuthController::class, 'logout']);

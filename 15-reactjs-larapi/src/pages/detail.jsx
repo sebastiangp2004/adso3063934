@@ -2,6 +2,9 @@ import { useParams } from "react-router-dom";
 import BtnBack from "../components/BtnBack";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "axios";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 function Detail() {
   const { id } = useParams();
@@ -18,35 +21,35 @@ function Detail() {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    const fetchPets = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-
-        const res = await fetch(`http://127.0.0.1:8000/api/pets/show/${id}`, {
-          method: "GET",
+  const detailPet = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const res = await axios.get(
+        `http://127.0.0.1:8000/api/pets/show/${id}`,
+        {
           headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`
           }
-        });
-
-        if (!res.ok) {
-          throw new Error("Error fetching pets");
         }
+      );
+      setPet(res.data.pet);
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Pet not found",
+        icon: "error",
+        timer: 2500,
 
-        const data = await res.json();
-        setPet(data.pet);
+      }).then(() => {;
+        navigate("/dashboard");
+      });
+    }
+  };
 
-      } catch (error) {
-        console.error("Error fetching pets:", error);
-      }
-    };
 
-    fetchPets();
-  }, [id]);
-
+  useEffect(() => {
+    detailPet();
+  }, []);
 
   return (
     <main id="Detail" class="">
@@ -64,7 +67,7 @@ function Detail() {
             <p>Description: {pet.description}</p>
           </div>
         ) : (
-          <p>Loading...</p>
+          <p>Loading pet details...</p>
         )}
       </div>
     </main>
