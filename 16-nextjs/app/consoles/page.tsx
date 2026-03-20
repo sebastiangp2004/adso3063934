@@ -2,10 +2,10 @@
 import SideBar from "@/components/SideBar";
 import { stackServerApp } from "@/stack/server";
 import { redirect } from "next/navigation";
-import GamesInfo from "@/components/GamesInfo";
+import ConsolesInfo from "@/components/ConsolesInfo";
 
 
-export default async function GamesPage({
+export default async function ConsolesPage({
     Children,
 }: {
     Children: React.ReactNode
@@ -18,8 +18,8 @@ export default async function GamesPage({
     }
     return (
         <div>
-            <SideBar currentPath={'/games'}>
-                <GamesInfo />
+            <SideBar currentPath={'/consoles'}>
+                <ConsolesInfo />
             </SideBar>
         </div>
     );
