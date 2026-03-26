@@ -9,11 +9,8 @@ export default function SearchBar() {
     const searchParams = useSearchParams();
 
     const [value, setValue] = useState(searchParams.get("search") ?? "");
-
-    // Este ref nos dice si el cambio de value vino del usuario o de la URL
     const isUserTyping = useRef(false);
 
-    // Debounce: solo corre cuando el USUARIO escribe (isUserTyping = true)
     useEffect(() => {
         if (!isUserTyping.current) return;
 
@@ -26,18 +23,14 @@ export default function SearchBar() {
                 params.delete("search");
             }
 
-            // Solo resetea a página 1 cuando el usuario busca algo nuevo
             params.set("page", "1");
-
             router.push(`${pathname}?${params.toString()}`);
             isUserTyping.current = false;
         }, 400);
 
         return () => clearTimeout(timeout);
-    }, [value]); // ← Solo depende de value, NO de searchParams
+    }, [value]);
 
-    // Sincroniza el input si el search de la URL cambia externamente
-    // (ej: el usuario limpia la URL a mano)
     useEffect(() => {
         if (!isUserTyping.current) {
             setValue(searchParams.get("search") ?? "");
@@ -58,7 +51,7 @@ export default function SearchBar() {
         <div className="relative flex items-center">
             {/* Search icon */}
             <svg
-                className="absolute left-3 w-3.5 h-3.5 text-primary/40 pointer-events-none"
+                className="absolute left-3 w-3.5 h-3.5 text-white/40 pointer-events-none"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -78,9 +71,10 @@ export default function SearchBar() {
                 className="
                     w-48 lg:w-64
                     pl-8 pr-7 py-1.5
-                    bg-white/[0.04] hover:bg-white/[0.06] focus:bg-white/[0.06]
-                    border border-white/[0.07] focus:border-primary/30
-                    rounded text-xs text-white/70 placeholder:text-white/20
+                    bg-transparent
+                    border border-white/30 hover:border-white/50 focus:border-white/70
+                    rounded-full
+                    text-xs text-white/80 placeholder:text-white/30
                     font-mono tracking-wide
                     outline-none
                     transition-all duration-200
@@ -91,11 +85,11 @@ export default function SearchBar() {
             {value && (
                 <button
                     onClick={handleClear}
-                    className="absolute right-2 text-white/20 hover:text-white/60 transition-colors duration-150"
+                    className="absolute right-3 text-white/30 hover:text-white/70 transition-colors duration-150"
                 >
                     <svg
-                        width="12"
-                        height="12"
+                        width="11"
+                        height="11"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
