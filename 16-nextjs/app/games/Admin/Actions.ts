@@ -3,7 +3,7 @@
 import { PrismaClient } from "@/app/generated/prisma";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { revalidatePath } from "next/cache";
-import { writeFile } from "fs/promises";
+import { writeFile, unlink } from "fs/promises";
 import path from "path";
 import { z } from "zod";
 
@@ -278,7 +278,26 @@ export async function deleteGame(
     }
 
     try {
+        // 1 — Obtener el juego para saber el nombre de la imagen
+        const game = await prisma.games.findUnique({ where: { id } });
+        
+        if (!game) {
+            return { success: false, message: "Game not found." };
+        }
+
+        // 2 — Eliminar el juego de la base de datos
         await prisma.games.delete({ where: { id } });
+
+        // 3 — Eliminar la imagen, excepto si es "no-cover.jpg"
+        if (game.cover && game.cover !== "no-cover.jpg") {
+            const imagePath = path.join(process.cwd(), "public", "imgs", game.cover);
+            try {
+                await unlink(imagePath);
+            } catch (err: unknown) {
+                // Silenciar error si la imagen no existe (no es crítico)
+                console.warn(`Could not delete image: ${game.cover}`, err);
+            }
+        }
     } catch (e: unknown) {
         if ((e as { code?: string })?.code === "P2025") {
             return { success: false, message: "Game not found." };
