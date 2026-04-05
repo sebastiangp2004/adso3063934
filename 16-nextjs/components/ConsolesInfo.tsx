@@ -1,9 +1,9 @@
-import NotePencilIcon from "../app/icons/NotePencilIcon";
-import TrashIcon from "../app/icons/TrashIcon";
-import PlusCircleIcon from "../app/icons/PlusCircleIcon";
-import { PrismaClient } from "@/src/generated/prisma/client";
+import { PrismaClient } from "@/src/generated/prisma/client"; // ← ajusta según tu proyecto
 import { PrismaNeon } from "@prisma/adapter-neon";
 import Image from "next/image";
+import AddConsoleModal    from "@/components/AddConsoleModal";
+import EditConsoleModal   from "@/components/EditConsoleModal";
+import DeleteConsoleModal from "@/components/DeleteConsoleModal";
 
 const prisma = new PrismaClient({
     adapter: new PrismaNeon({
@@ -13,13 +13,12 @@ const prisma = new PrismaClient({
 
 export default async function ConsolesInfo() {
     const consoles = await prisma.consoles.findMany({
-        include: {
-            games: true,
-        },
+        include: { games: true },
     });
 
     return (
         <div className="w-full min-h-screen bg-base-300 p-6 lg:p-10">
+
             {/* Header */}
             <div className="flex items-center gap-4 mb-10">
                 <h1 className="text-3xl font-bold text-white tracking-tight whitespace-nowrap">
@@ -30,24 +29,23 @@ export default async function ConsolesInfo() {
                     <span className="text-xs font-mono text-primary/60 uppercase tracking-widest whitespace-nowrap">
                         {consoles.length} Consoles
                     </span>
-                    <button className="btn btn-sm btn-outline btn-success text-[11px] uppercase tracking-widest font-semibold transition-all duration-200 transform hover:scale-105">
-                        <PlusCircleIcon />
-                        Add Console
-                    </button>
+
+                    {/* ✅ Reemplaza el botón estático */}
+                    <AddConsoleModal />
                 </div>
             </div>
 
             {/* Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {consoles.map((console) => (
+                {consoles.map((consoleItem) => (
                     <div
-                        key={console.id}
+                        key={consoleItem.id}
                         className="group card bg-base-100/40 backdrop-blur-xl border border-white/[0.07] hover:border-primary/40 shadow-lg hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
                     >
                         <figure className="relative h-44 overflow-hidden">
                             <Image
-                                src={`/imgs/${console.image}`}
-                                alt={console.name}
+                                src={`/imgs/${consoleItem.image}`}
+                                alt={consoleItem.name}
                                 fill
                                 className="object-cover group-hover:scale-105 transition-transform duration-500"
                             />
@@ -56,28 +54,28 @@ export default async function ConsolesInfo() {
 
                         <div className="card-body p-4 gap-0">
                             <h2 className="card-title text-base text-white font-bold leading-snug line-clamp-2 mb-3">
-                                {console.name}
+                                {consoleItem.name}
                             </h2>
 
                             <div className="space-y-1.5 mb-3">
                                 <div className="flex items-center gap-12 text-xs">
                                     <span className="text-white/30 uppercase tracking-widest font-semibold text-[10px] w-14 shrink-0">Manufacturer</span>
-                                    <span className="text-white/70 truncate">{console.manufacturer}</span>
+                                    <span className="text-white/70 truncate">{consoleItem.manufacturer}</span>
                                 </div>
                                 <div className="flex items-center gap-12 text-xs">
                                     <span className="text-white/30 uppercase tracking-widest font-semibold text-[10px] w-14 shrink-0">Release</span>
-                                    <span className="text-white/70">{new Date(console.releasedate).toLocaleDateString()}</span>
+                                    <span className="text-white/70">{new Date(consoleItem.releasedate).toLocaleDateString()}</span>
                                 </div>
                                 <div className="flex items-center gap-12 text-xs">
                                     <span className="text-white/30 uppercase tracking-widest font-semibold text-[10px] w-14 shrink-0">Games</span>
-                                    <span className="text-white/70">{console.games.length}</span>
+                                    <span className="text-white/70">{consoleItem.games.length}</span>
                                 </div>
                             </div>
 
                             <div className="divider my-0 before:bg-white/5 after:bg-white/5" />
 
                             <p className="text-white/30 text-[11px] leading-relaxed line-clamp-2 my-2">
-                                {console.description}
+                                {consoleItem.description}
                             </p>
 
                             <div className="card-actions items-center justify-between mt-1">
@@ -85,12 +83,12 @@ export default async function ConsolesInfo() {
                                     &nbsp;
                                 </span>
                                 <div className="flex items-center gap-2">
-                                    <button className="btn btn-sm btn-outline btn-info text-[11px] uppercase tracking-widest font-semibold transition-all duration-200 transform hover:scale-105">
-                                        <NotePencilIcon />
-                                    </button>
-                                    <button className="btn btn-sm btn-outline btn-error text-[11px] uppercase tracking-widest font-semibold transition-all duration-200 transform hover:scale-105">
-                                        <TrashIcon />
-                                    </button>
+                                    {/* ✅ Reemplaza los botones estáticos */}
+                                    <EditConsoleModal console={consoleItem} />
+                                    <DeleteConsoleModal
+                                        consoleId={consoleItem.id}
+                                        consoleName={consoleItem.name}
+                                    />
                                 </div>
                             </div>
                         </div>
