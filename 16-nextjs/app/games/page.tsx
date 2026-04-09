@@ -6,7 +6,7 @@ import GamesInfo from "@/components/GamesInfo";
 export default async function GamesPage({
     searchParams,
 }: {
-    searchParams: Promise<{ page?: string; search?: string }>;
+    searchParams: Promise<{ page?: string; search?: string; genre?: string }>;
 }) {
     const user = await stackServerApp.getUser();
     if (!user) {

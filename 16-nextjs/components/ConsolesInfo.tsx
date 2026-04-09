@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/src/generated/prisma/client"; // ← ajusta según tu proyecto
+import { PrismaClient } from "@/src/generated/prisma/client"; 
 import { PrismaNeon } from "@prisma/adapter-neon";
 import Image from "next/image";
 import AddConsoleModal    from "@/components/AddConsoleModal";
@@ -30,7 +30,6 @@ export default async function ConsolesInfo() {
                         {consoles.length} Consoles
                     </span>
 
-                    {/* ✅ Reemplaza el botón estático */}
                     <AddConsoleModal />
                 </div>
             </div>
@@ -83,7 +82,6 @@ export default async function ConsolesInfo() {
                                     &nbsp;
                                 </span>
                                 <div className="flex items-center gap-2">
-                                    {/* ✅ Reemplaza los botones estáticos */}
                                     <EditConsoleModal console={consoleItem} />
                                     <DeleteConsoleModal
                                         consoleId={consoleItem.id}

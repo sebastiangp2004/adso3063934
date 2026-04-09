@@ -6,6 +6,7 @@ import SearchBar from "@/components/SearchBar";
 import AddGameModal from "@/components/AddGameModal";
 import EditGameModal from "@/components/EditGameModal";
 import DeleteConfirmModal from "@/components/DeleteGameModal";
+import GenreFilter from "@/components/GenreFilter";
 
 // ================================================================
 //  PRISMA CLIENT
@@ -24,7 +25,7 @@ const ITEMS_PER_PAGE = 12;
 // ================================================================
 
 interface GamesInfoProps {
-    searchParams?: { page?: string; search?: string };
+    searchParams?: { page?: string; search?: string; genre?: string };
 }
 
 // ================================================================
@@ -34,6 +35,7 @@ interface GamesInfoProps {
 export default async function GamesInfo({ searchParams }: GamesInfoProps) {
     const currentPage = Number(searchParams?.page) || 1;
     const search      = searchParams?.search ?? "";
+    const genre       = searchParams?.genre ?? "";
     const skip        = (currentPage - 1) * ITEMS_PER_PAGE;
 
     // Filtro de búsqueda
@@ -42,20 +44,22 @@ export default async function GamesInfo({ searchParams }: GamesInfoProps) {
             ? { price: { equals: Number(search) } }
             : {};
 
-    const where = search
-        ? {
-              OR: [
-                  { title:     { contains: search, mode: "insensitive" as const } },
-                  { developer: { contains: search, mode: "insensitive" as const } },
-                  { genre:     { contains: search, mode: "insensitive" as const } },
-                  { console:   { is: { name: { contains: search, mode: "insensitive" as const } } } },
-                  ...(priceFilter.price ? [priceFilter] : []),
-              ],
-          }
-        : {};
+    const where: any = {};
+    if (genre) {
+        where.genre = genre;
+    }
+    if (search) {
+        where.OR = [
+            { title:     { contains: search, mode: "insensitive" as const } },
+            { developer: { contains: search, mode: "insensitive" as const } },
+            { genre:     { contains: search, mode: "insensitive" as const } },
+            { console:   { is: { name: { contains: search, mode: "insensitive" as const } } } },
+            ...(priceFilter.price ? [priceFilter] : []),
+        ];
+    }
 
-    // Una sola llamada con Promise.all para los 3 queries
-    const [games, totalGames, consoles] = await Promise.all([
+    // Una sola llamada con Promise.all para los 4 queries
+    const [games, totalGames, consoles, genreRows] = await Promise.all([
         prisma.games.findMany({
             where,
             include: { console: true },
@@ -65,9 +69,16 @@ export default async function GamesInfo({ searchParams }: GamesInfoProps) {
         }),
         prisma.games.count({ where }),
         prisma.consoles.findMany({ orderBy: { name: "asc" } }),
+        prisma.games.findMany({
+            select: { genre: true },
+            distinct: ["genre"],
+            orderBy: { genre: "asc" },
+        }),
     ]);
 
     const totalPages = Math.ceil(totalGames / ITEMS_PER_PAGE);
+
+    const genres = genreRows.map((row) => row.genre);
 
     return (
         <div className="w-full min-h-screen bg-base-300 p-6 lg:p-10">
@@ -86,6 +97,10 @@ export default async function GamesInfo({ searchParams }: GamesInfoProps) {
                     </span>
                     <AddGameModal consoles={consoles} />
                 </div>
+                
+            </div>
+            <div>
+                <GenreFilter genres={genres} selectedGenre={genre} search={search} />
             </div>
 
             {/* ── Sin resultados ── */}
