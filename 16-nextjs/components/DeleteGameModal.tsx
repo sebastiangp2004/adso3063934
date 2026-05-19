@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { deleteGame } from "@/app/games/Admin/Actions";
 import Portal from "@/components/Portal";
+import { successAlert } from "@/components/SweetAlert";
 
 // ================================================================
 //  TIPOS
@@ -30,6 +31,7 @@ export default function DeleteConfirmModal({ gameId, gameTitle }: DeleteConfirmM
         startTransition(async () => {
             const result = await deleteGame(gameId);
             if (result.success) {
+                successAlert(result.message ?? "Game deleted successfully!");
                 setIsOpen(false);
             } else {
                 setError(result.message ?? "Something went wrong.");

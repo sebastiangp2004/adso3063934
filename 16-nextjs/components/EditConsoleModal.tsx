@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { updateConsole, type ActionState } from "@/app/consoles/Admin/Actions";
 import Portal from "@/components/Portal";
+import { successAlert } from "@/components/SweetAlert";
 
 // ================================================================
 //  TIPOS
@@ -50,9 +51,20 @@ export default function EditConsoleModal({ console: consoleData }: EditConsoleMo
 
     const [state, formAction, isPending] = useActionState(updateConsole, INITIAL_STATE);
 
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+        setPreview(`/imgs/${consoleData.image}`);
+        setImageName(consoleData.image);
+        setIsNewImage(false);
+        formRef.current?.reset();
+    }, [consoleData.image]);
+
     useEffect(() => {
-        if (state.success) handleClose();
-    }, [state.success]);
+        if (state.success) {
+            successAlert(state.message ?? "Console updated successfully!");
+            handleClose();
+        }
+    }, [state, handleClose]);
 
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
@@ -64,14 +76,6 @@ export default function EditConsoleModal({ console: consoleData }: EditConsoleMo
         setImageName(consoleData.image);
         setIsNewImage(false);
         setIsOpen(true);
-    };
-
-    const handleClose = () => {
-        setIsOpen(false);
-        setPreview(`/imgs/${consoleData.image}`);
-        setImageName(consoleData.image);
-        setIsNewImage(false);
-        formRef.current?.reset();
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

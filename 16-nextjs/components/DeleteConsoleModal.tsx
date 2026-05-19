@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { deleteConsole } from "@/app/consoles/Admin/Actions";
 import Portal from "@/components/Portal";
+import { successAlert } from "@/components/SweetAlert";
 
 interface DeleteConsoleModalProps {
     consoleId: number;
@@ -22,6 +23,7 @@ export default function DeleteConsoleModal({ consoleId, consoleName }: DeleteCon
         startTransition(async () => {
             const result = await deleteConsole(consoleId);
             if (result.success) {
+                successAlert(result.message ?? "Console deleted successfully!");
                 setIsOpen(false);
             } else {
                 setError(result.message ?? "Something went wrong.");

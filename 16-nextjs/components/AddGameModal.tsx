@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { createGame, type ActionState } from "@/app/games/Admin/Actions";
 import Portal from "@/components/Portal";
+import { successAlert } from "@/components/SweetAlert";
 
 interface Console {
     id: number;
@@ -33,21 +34,24 @@ export default function AddGameModal({ consoles }: AddGameModalProps) {
 
     const [state, formAction, isPending] = useActionState(createGame, INITIAL_STATE);
 
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+        setPreview(null);
+        setCoverName("");
+        formRef.current?.reset();
+    }, []);
+
     useEffect(() => {
-        if (state.success) handleClose();
-    }, [state.success]);
+        if (state.success) {
+            successAlert(state.message ?? "Game created successfully!");
+            handleClose();
+        }
+    }, [state, handleClose]);
 
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
         return () => { document.body.style.overflow = ""; };
     }, [isOpen]);
-
-    const handleClose = () => {
-        setIsOpen(false);
-        setPreview(null);
-        setCoverName("");
-        formRef.current?.reset();
-    };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -166,14 +170,14 @@ export default function AddGameModal({ consoles }: AddGameModalProps) {
                                 {/* Title */}
                                 <div>
                                     <label className={LABEL}>Title <span className="text-error">*</span></label>
-                                    <input name="title" type="text" required placeholder="e.g. Black Myth: Wukong" defaultValue={state.oldValues?.title ?? ""} className={fc("title")} />
+                                    <input name="title" type="text"  placeholder="e.g. Black Myth: Wukong" defaultValue={state.oldValues?.title ?? ""} className={fc("title")} />
                                     {state.errors?.title && <p className={ERR_MSG}>⚠ {state.errors.title}</p>}
                                 </div>
 
                                 {/* Developer */}
                                 <div>
                                     <label className={LABEL}>Developer <span className="text-error">*</span></label>
-                                    <input name="developer" type="text" required placeholder="e.g. Game Science" defaultValue={state.oldValues?.developer ?? ""} className={fc("developer")} />
+                                    <input name="developer" type="text"  placeholder="e.g. Game Science" defaultValue={state.oldValues?.developer ?? ""} className={fc("developer")} />
                                     {state.errors?.developer && <p className={ERR_MSG}>⚠ {state.errors.developer}</p>}
                                 </div>
 
@@ -181,12 +185,12 @@ export default function AddGameModal({ consoles }: AddGameModalProps) {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className={LABEL}>Genre <span className="text-error">*</span></label>
-                                        <input name="genre" type="text" required placeholder="e.g. Action RPG" defaultValue={state.oldValues?.genre ?? ""} className={fc("genre")} />
+                                        <input name="genre" type="text"  placeholder="e.g. Action RPG" defaultValue={state.oldValues?.genre ?? ""} className={fc("genre")} />
                                         {state.errors?.genre && <p className={ERR_MSG}>⚠ {state.errors.genre}</p>}
                                     </div>
                                     <div>
                                         <label className={LABEL}>Console <span className="text-error">*</span></label>
-                                        <select name="console_id" required defaultValue={state.oldValues?.console_id ?? ""} className={`${fc("console_id")} appearance-none cursor-pointer`}>
+                                        <select name="console_id"  defaultValue={state.oldValues?.console_id ?? ""} className={`${fc("console_id")} appearance-none cursor-pointer`}>
                                             <option value="" disabled className="bg-base-300 text-white/30">Select console...</option>
                                             {consoles.map((c) => (
                                                 <option key={c.id} value={c.id} className="bg-base-300 text-white/80">{c.name}</option>
@@ -202,13 +206,13 @@ export default function AddGameModal({ consoles }: AddGameModalProps) {
                                         <label className={LABEL}>Price (USD) <span className="text-error">*</span></label>
                                         <div className="relative">
                                             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-primary/50 font-mono text-sm font-bold pointer-events-none">$</span>
-                                            <input name="price" type="number" step="0.01" min="0" required placeholder="59.99" defaultValue={state.oldValues?.price ?? ""} className={`${fc("price")} pl-8`} />
+                                            <input name="price" type="number" step="0.01" min="0"  placeholder="59.99" defaultValue={state.oldValues?.price ?? ""} className={`${fc("price")} pl-8`} />
                                         </div>
                                         {state.errors?.price && <p className={ERR_MSG}>⚠ {state.errors.price}</p>}
                                     </div>
                                     <div>
                                         <label className={LABEL}>Release Date <span className="text-error">*</span></label>
-                                        <input name="releasedate" type="date" required defaultValue={state.oldValues?.releasedate ?? ""} className={`${fc("releasedate")} [color-scheme:dark] max-w-[130px] sm:max-w-none`} />
+                                        <input name="releasedate" type="date"  defaultValue={state.oldValues?.releasedate ?? ""} className={`${fc("releasedate")} [color-scheme:dark] max-w-[130px] sm:max-w-none`} />
                                         {state.errors?.releasedate && <p className={ERR_MSG}>⚠ {state.errors.releasedate}</p>}
                                     </div>
                                 </div>

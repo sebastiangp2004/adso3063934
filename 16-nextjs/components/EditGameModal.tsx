@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { updateGame, type ActionState } from "@/app/games/Admin/Actions";
 import Portal from "@/components/Portal";
+import { successAlert } from "@/components/SweetAlert";
 
 // ================================================================
 //  TIPOS
@@ -62,9 +63,20 @@ export default function EditGameModal({ game, consoles }: EditGameModalProps) {
 
     // ── Efectos ─────────────────────────────────────────────────
 
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+        setPreview(`/imgs/${game.cover}`);
+        setCoverName(game.cover);
+        setIsNewImage(false);
+        formRef.current?.reset();
+    }, [game.cover]);
+
     useEffect(() => {
-        if (state.success) handleClose();
-    }, [state.success]);
+        if (state.success) {
+            successAlert(state.message ?? "Game updated successfully!");
+            handleClose();
+        }
+    }, [state, handleClose]);
 
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
@@ -78,14 +90,6 @@ export default function EditGameModal({ game, consoles }: EditGameModalProps) {
         setCoverName(game.cover);
         setIsNewImage(false);
         setIsOpen(true);
-    };
-
-    const handleClose = () => {
-        setIsOpen(false);
-        setPreview(`/imgs/${game.cover}`);
-        setCoverName(game.cover);
-        setIsNewImage(false);
-        formRef.current?.reset();
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
